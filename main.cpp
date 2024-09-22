@@ -158,18 +158,17 @@ int main() {
             cout << bicycle2.ID << " " << bicycle2.model << " " << "\n";
 
         } else if (exercice == 5) {
+            cout << "a)" << endl;
             MyClass myclass;
             Friendly friendly;
             friendly.display(myclass);
-            cout << "\n" << endl;
+            cout << "\n\nb)\n" << endl;
 
-            myClass obj1(10);
-            myOtherClass obj2(30);
-            obj1.printData2();
-            obj1.acces_myOtherClass(obj2);
+            user User;
+            DataBase database;
+            database.display(User);
         }
     }
-
 
     return 0;
 }

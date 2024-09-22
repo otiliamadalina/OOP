@@ -85,7 +85,7 @@ public:
 class Friendly {
 public:
     void display(MyClass& t) {
-        cout << "\nThe value of Private Variable = "
+        cout << "The value of Private Variable = "
              << t.private_stuff << endl;
         cout << "The value of Protected Variable = "
              << t.protected_stuff;
@@ -94,35 +94,25 @@ public:
 
 //q4 b.---------------------------------------
 
-class myClass;
-
-class myOtherClass {
+class user {
 private:
-    static int private_data_from_myOtherClass;
+    int password;
+protected:
+    string role;
+
 public:
-    myOtherClass(int data) {
-        private_data_from_myOtherClass = data;
+    user() {
+        password = 8765432;
+        role = "admin";
     }
-    friend class myClass;
-    void printData() {
-        cout << "Data in myOtherClass: " << private_data_from_myOtherClass << endl;
-    }
+    friend class DataBase;
 };
 
-int myOtherClass::private_data_from_myOtherClass = 0;
-
-class myClass {
-private:
-    int private_data_from_myClass;
+class DataBase {
 public:
-    myClass(int data) : private_data_from_myClass(data) {}
-    friend class myOtherClass;
-
-    void acces_myOtherClass(myOtherClass &a){
-        a.printData();
-    }
-    void printData2() {
-        cout << "Data in myClass: " << private_data_from_myClass << endl;
+    void display(user &info) {
+        cout << "Password: " << info.password << endl;
+        cout << "Role: " << info.role << endl;
     }
 };
 
