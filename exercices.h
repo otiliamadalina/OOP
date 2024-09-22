@@ -65,5 +65,65 @@ Bicycle::~Bicycle() {
     cout << "Bicycle with ID " << ID << " and model " << model << " is destroyed." << endl;
 }
 
+//q4 a.---------------------------------------
+
+class MyClass {
+private:
+    int private_stuff;
+
+protected:
+    int protected_stuff;
+
+public:
+    MyClass() {
+        private_stuff = 190;
+        protected_stuff = 99;
+    }
+    friend class Friendly;
+};
+
+class Friendly {
+public:
+    void display(MyClass& t) {
+        cout << "\nThe value of Private Variable = "
+             << t.private_stuff << endl;
+        cout << "The value of Protected Variable = "
+             << t.protected_stuff;
+    }
+};
+
+//q4 b.---------------------------------------
+
+class myClass;
+
+class myOtherClass {
+private:
+    static int private_data_from_myOtherClass;
+public:
+    myOtherClass(int data) {
+        private_data_from_myOtherClass = data;
+    }
+    friend class myClass;
+    void printData() {
+        cout << "Data in myOtherClass: " << private_data_from_myOtherClass << endl;
+    }
+};
+
+int myOtherClass::private_data_from_myOtherClass = 0;
+
+class myClass {
+private:
+    int private_data_from_myClass;
+public:
+    myClass(int data) : private_data_from_myClass(data) {}
+    friend class myOtherClass;
+
+    void acces_myOtherClass(myOtherClass &a){
+        a.printData();
+    }
+    void printData2() {
+        cout << "Data in myClass: " << private_data_from_myClass << endl;
+    }
+};
 
 #endif //OOP_WORK_EXERCICES_H
