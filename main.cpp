@@ -112,6 +112,7 @@ int main() {
         cout << "\t\t-3- Inheritance\n";
         cout << "\t\t\t-4- Constructor\n";
         cout << "\t\t\t\t-5- Friend class\n";
+        cout << "\t\t\t\t\t-0- EXIT\n";
         cout << "Select exercice: ";
         cin >> exercice;
 
@@ -168,6 +169,8 @@ int main() {
             DataBase db;
             db.display(User);
             User.display_db(db);
+        } else if (exercice == 0) {
+            break;
         }
     }
 
