@@ -51,7 +51,7 @@ public:
     int ID;
     string model;
 
-    Bicycle (int x, string y);
+    Bicycle(int x, string y);
 
     ~Bicycle();
 };
@@ -79,12 +79,13 @@ public:
         private_stuff = 190;
         protected_stuff = 99;
     }
+
     friend class Friendly;
 };
 
 class Friendly {
 public:
-    void display(MyClass& t) {
+    void display(MyClass &t) {
         cout << "The value of Private Variable = "
              << t.private_stuff << endl;
         cout << "The value of Protected Variable = "
@@ -94,9 +95,13 @@ public:
 
 //q4 b.---------------------------------------
 
+class DataBase;
+
 class user {
+
 private:
     int password;
+
 protected:
     string role;
 
@@ -105,15 +110,34 @@ public:
         password = 8765432;
         role = "admin";
     }
+
     friend class DataBase;
+
+    void display_db(DataBase &info_data);
 };
 
+
 class DataBase {
+
+private:
+    string email;
+
 public:
-    void display(user &info) {
-        cout << "Password: " << info.password << endl;
-        cout << "Role: " << info.role << endl;
+    DataBase() {
+        email = "user@gmail.com";
     }
+
+     void display(user &info) {
+        cout << "Password: " << info.password << endl;
+         cout << "Role: " << info.role << endl;
+     }
+
+    friend class user;
 };
+
+void user::display_db(DataBase &info_data) {
+    cout << "Email: " << info_data.email << endl;
+}
+
 
 #endif //OOP_WORK_EXERCICES_H

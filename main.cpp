@@ -165,8 +165,9 @@ int main() {
             cout << "\n\nb)\n" << endl;
 
             user User;
-            DataBase database;
-            database.display(User);
+            DataBase db;
+            db.display(User);
+            User.display_db(db);
         }
     }
 
