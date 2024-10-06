@@ -4,6 +4,7 @@
 #include <vector>
 #include <fstream>
 #include <sstream>
+
 using namespace std;
 
 enum StudyField {
@@ -27,6 +28,8 @@ class Student {
     string firstName, lastName, email, enrollmentDate, dateOfBirth;
 
 public:
+    string facultyAbbreviationStudentBelongs;
+
     bool isGraduate{false};
 
     void inputData();
@@ -34,53 +37,70 @@ public:
     void printData() const;
 
     string getEmail() const { return email; }
+
     string getFirstName() const { return firstName; }
+
     string getLastName() const { return lastName; }
 
     bool isGraduated() const { return isGraduate; }
 
     void setGraduationStatus(bool status) { isGraduate = status; }
 
-    string facultyAbbreviationStudentBelongs;
+    void saveToFile(ofstream &ofs) const;
 
-    void saveToFile(ofstream& ofs) const;
-    void loadFromFile(const string& line);
+    void loadFromFile(const string &line);
 
 };
 
 class Faculty {
-    Student list_of_students[50];
-    int nr_of_students;
 
+    struct FacultyInfo {
+        string facultyName;
+        string facultyAbbreviation;
+        StudyField studyField;
+    };
 
 public:
-    vector<Faculty> faculties;
-    string facultyName, facultyAbbreviation;;
-    StudyField studyField;
+    vector<FacultyInfo> faculties;
 
-   // Faculty() : nr_of_students(0) {}
+    string facultyName, facultyAbbreviation;;
+
+    Faculty() : nr_of_students(0) {}
 
     void createFaculty();
+
     void displayFaculties();
+
     void searchStudent() const;
+
     void displayAllFacultiesOfAField();
+
     void addStudentData();
+
     void displayStudents() const;
+
     void displayGraduatedStudents() const;
+
     void graduateStudentByEmail(const string &email);
 
     void checkStudentBelongsFaculty(const string &facultyAbbreviation, const string &email);
 
     void addStudent(const Student &student);
+
     void saveToFile(ofstream &ofs) const;
+
     void loadFromFile(const string &line);
 
+
+    int nr_of_students;
+    Student list_of_students[500];
 };
 
 class SaveManager {
 public:
-    static void saveData(const vector<Faculty>& faculties);
-    static void loadData(vector<Faculty>& faculties);
+    static void saveData(const vector<Faculty> &faculties);
+
+    static void loadData(vector<Faculty> &faculties);
 };
 
 
