@@ -1,7 +1,7 @@
 #include "universityDB.h"
 
 void Faculty::createFaculty() {
-    FacultyInfo newFaculty;
+    Faculty newFaculty;
 
     cout << "Enter faculty name: ";
     getline(cin, newFaculty.facultyName);
@@ -29,7 +29,7 @@ void Faculty::createFaculty() {
 
 void Faculty::displayFaculties() {
     cout << "\n";
-    for (const auto& faculty : faculties) {
+    for (const auto &faculty: faculties) {
         cout << "Faculty Name: " << faculty.facultyName << endl;
         cout << "Abbreviation: " << faculty.facultyAbbreviation << endl;
         cout << "Study Field: " << fieldNames[faculty.studyField] << endl;
@@ -52,7 +52,7 @@ void Faculty::displayAllFacultiesOfAField() {
         cout << "Faculties in the field of " << fieldNames[selectedField] << ":\n";
 
         bool found = false;
-        for (const auto& faculty : faculties) {
+        for (const auto &faculty: faculties) {
             if (faculty.studyField == selectedField) {
                 cout << "Faculty Name: " << faculty.facultyName
                      << ", Abbreviation: " << faculty.facultyAbbreviation << endl;
@@ -95,7 +95,7 @@ void Faculty::displayStudents() const {
 
     cout << "List of students in faculty " << facultyAbbreviation << ": " << endl;
     bool foundEnrolled = false;
-
+    cout << "\n" << endl;
     for (int i = 0; i < nr_of_students; i++) {
 
         if (!list_of_students[i].isGraduated() &&
@@ -117,6 +117,7 @@ void Faculty::displayGraduatedStudents() const {
     cout << "List of graduated students in faculty " << facultyAbbreviation << ": " << endl;
     bool foundGraduated = false;
 
+    cout << endl;
     for (int i = 0; i < nr_of_students; i++) {
 
         if (list_of_students[i].isGraduated() &&
@@ -125,7 +126,6 @@ void Faculty::displayGraduatedStudents() const {
             foundGraduated = true;
         }
     }
-
     if (!foundGraduated) {
         cout << "No graduated students found for faculty " << facultyAbbreviation << "." << endl;
     }
@@ -142,7 +142,7 @@ void Faculty::searchStudent() const {
         if (list_of_students[i].getEmail() == email) {
             list_of_students[i].printData();
             cout << "Faculty: ";
-            for (const auto& faculty : faculties) {
+            for (const auto &faculty: faculties) {
                 if (faculty.facultyAbbreviation == list_of_students[i].facultyAbbreviationStudentBelongs) {
                     cout << faculty.facultyName << " (" << faculty.facultyAbbreviation << ")\n";
                     break;
@@ -158,28 +158,42 @@ void Faculty::searchStudent() const {
     }
 }
 
-void Faculty::checkStudentBelongsFaculty() const {
-    string facultyAbbreviation;
-    string email;
-
-    cout << "Enter faculty abbreviation: ";
-    getline(cin, facultyAbbreviation);
-
-    cout << "Enter student email: ";
-    getline(cin, email);
-
-    bool found = false;
+void Faculty::checkStudentBelongsFaculty(const string& facultyAbbreviation, const string& studentEmail) {
 
     for (int i = 0; i < nr_of_students; i++) {
-        if (list_of_students[i].getEmail() == email &&
-            list_of_students[i].facultyAbbreviationStudentBelongs == facultyAbbreviation) {
-            cout << "Student " << email << " belongs to faculty " << facultyAbbreviation << "." << endl;
-            found = true;
-            break;
+        const auto& student = list_of_students[i];
+        if (student.getEmail() == studentEmail) {
+            if (student.isGraduated()) {
+                cout << "Student " << student.getFirstName() << " " << student.getLastName()
+                          << " graduated from the " << facultyAbbreviation << "Faculty." << endl;
+            } else {
+                cout << "Student " << student.getFirstName() << " " << student.getLastName()
+                          << " belongs to " << facultyAbbreviation << "Faculty.\n";
+            }
+            return;
         }
     }
+    cout << "Student with email " << studentEmail << " doesnt belong to any faculty" << facultyAbbreviation << ".\n";
+}
 
-    if (!found) {
-        cout << "Student with email " << email << " does not belong to faculty " << facultyAbbreviation << "." << endl;
+void Faculty::saveToFile(ofstream &ofs) const {
+    ofs << facultyName << "," << facultyAbbreviation << endl;
+    for (int i = 0; i < nr_of_students; i++) {
+        list_of_students[i].saveToFile(ofs);
+    }
+}
+
+void Faculty::loadFromFile(const string &line) {
+    stringstream ss(line);
+    getline(ss, facultyName, ',');
+    getline(ss, facultyAbbreviation, ',');
+}
+
+void Faculty::addStudent(const Student& student) {
+    if (nr_of_students < 50) {
+        list_of_students[nr_of_students] = student;
+        nr_of_students++;
+    } else {
+        cout << "Maximum number of students reached." << endl;
     }
 }

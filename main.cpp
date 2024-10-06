@@ -40,10 +40,16 @@ int main() {
     Faculty faculty;
     int choice, exercice;
 
+    vector<Faculty> faculties;
+    SaveManager saveManager;
+    saveManager.loadData(faculties);
+
+
     while (true) {
         cout << "\n-1- General options\n";
         cout << "\t-2- Faculty options\n";
-        cout << "\t\t-0- EXIT\n";
+        cout << "\t\t-3- Save Data\n";
+        cout << "\t\t\t-0- EXIT\n";
         cout << "Select exercise: ";
         cin >> exercice;
 
@@ -104,10 +110,15 @@ int main() {
                         faculty.displayGraduatedStudents();
                         break;
 
-                    case BELONGS_TO_FACULTY:
-                        faculty.checkStudentBelongsFaculty();
+                    case BELONGS_TO_FACULTY: {
+                        string facultyAbbreviation, email;
+                        cout << "Enter faculty abbreviation: ";
+                        getline(cin, facultyAbbreviation);
+                        cout << "Enter student email: ";
+                        getline(cin, email);
+                        faculty.checkStudentBelongsFaculty(facultyAbbreviation, email);
                         break;
-
+                    }
                     case EXIT:
                         break;
 
@@ -116,7 +127,13 @@ int main() {
                 }
             } while (choice != EXIT);
 
-        } else if (exercice == 0) {
+        } else if (exercice == 3) {
+            saveManager.saveData(faculties);
+            cout << "Data saved successfully.\n";
+
+            break;
+
+        }else if (exercice == 0) {
             break;
         }
     }

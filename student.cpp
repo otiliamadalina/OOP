@@ -36,3 +36,28 @@ void Student::printData() const {
          << "\nDate of birth: " << dateOfBirth
          << endl;
 }
+
+void Student::saveToFile(ofstream& ofs) const {
+    ofs << facultyAbbreviationStudentBelongs << ","
+        << firstName << ","
+        << lastName << ","
+        << email << ","
+        << enrollmentDate << ","
+        << dateOfBirth << ","
+        << (isGraduate ? "yes" : "no") << endl;
+}
+
+void Student::loadFromFile(const string& line) {
+    stringstream ss(line);
+    getline(ss, facultyAbbreviationStudentBelongs, ',');
+    getline(ss, firstName, ',');
+    getline(ss, lastName, ',');
+    getline(ss, email, ',');
+    getline(ss, enrollmentDate, ',');
+    getline(ss, dateOfBirth, ',');
+
+    string gradResponse;
+    getline(ss, gradResponse, ',');
+    isGraduate = (gradResponse == "yes");
+}
+
