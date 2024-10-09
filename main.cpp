@@ -6,7 +6,7 @@ enum FACULTY_MENU {
     ENROLLED_STUDENTS,
     GRADUATE_STUDENTS,
     BELONGS_TO_FACULTY,
-    EXIT
+    EXIT = 0
 };
 
 enum GENERAL_MENU {
@@ -47,12 +47,19 @@ void print_student_menu() {
     cout << "(" << EXIT << ") EXIT\n";
 }
 
-
 int main() {
     Faculty faculty;
     FileManager fileManager;
     Student student;
+
     int choice, exercice;
+
+    FileLogger fileLogger("D:\\UTM\\OOP\\laboratories_TEST\\LoggingSystem.txt");
+    ConsoleLogger consoleLogger;
+
+    string startMessage = "Program started";
+    consoleLogger.log(startMessage);
+    fileLogger.log(startMessage);
 
     while (true) {
         cout << "\n1. General options\n";
@@ -70,19 +77,23 @@ int main() {
 
                 switch (choice) {
                     case CREATE_FACULTY:
-                        fileManager.write_faculties_to_file();
+                        fileManager.write_faculties_to_file(&fileLogger);
+                        consoleLogger.log("Created a new faculty.");
                         break;
 
                     case SEARCH_STUDENT_AND_SHOW_FIELD:
-                        faculty.searchStudentByEmail();
+                        faculty.searchStudentByEmail(&fileLogger);
+                        consoleLogger.log("Searched for a student by email.");
                         break;
 
                     case DISPLAY_FACULTIES_FROM_FILE:
-                        fileManager.readFacultiesFromFile();
+                        fileManager.readFacultiesFromFile(&fileLogger);
+                        consoleLogger.log("Displayed faculties from file.");
                         break;
 
                     case DISPLAY_ALL_FACULTIES_OF_A_FIELD:
-                        faculty.displayAllFacultiesOfAField();
+                        faculty.displayAllFacultiesOfAField(&fileLogger);
+                        consoleLogger.log("Displayed all faculties of a field.");
                         break;
 
                     case EXIT:
@@ -101,23 +112,28 @@ int main() {
 
                 switch (choice) {
                     case CREATE_A_NEW_STUDENT: {
-                        fileManager.writeStudentsToFile();
+                        fileManager.writeStudentsToFile(&fileLogger);
+                        consoleLogger.log("Added a new student.");
                         break;
                     }
                     case GRADUATE_A_STUDENT: {
-                        faculty.graduateAStudentByEmail();
+                        faculty.graduateAStudentByEmail(&fileLogger);
+                        consoleLogger.log("Graduated a student.");
                         break;
                     }
                     case ENROLLED_STUDENTS:
-                        faculty.displayEnrolledStudents();
+                        faculty.displayEnrolledStudents(&fileLogger);
+                        consoleLogger.log("Displayed enrolled students.");
                         break;
 
                     case GRADUATE_STUDENTS:
-                        faculty.displayGraduatedStudents();
+                        faculty.displayGraduatedStudents(&fileLogger);
+                        consoleLogger.log("Displayed graduated students.");
                         break;
 
                     case BELONGS_TO_FACULTY: {
-                        faculty.checkStudentBelongsFaculty();
+                        faculty.checkStudentBelongsFaculty(&fileLogger);
+                        consoleLogger.log("Checked if a student belongs to a faculty.");
                         break;
                     }
                     case EXIT:
@@ -136,11 +152,13 @@ int main() {
 
                 switch (choice) {
                     case RETRIEVE_A_STUDENT:
-                        student.retrieveStudentByID();
+                        student.retrieveStudentByID(&fileLogger);
+                        consoleLogger.log("Retrieved a student by ID.");
                         break;
 
                     case DELETE_A_STUDENT:
-                        student.deleteAStudentByID();
+                        student.deleteAStudentByID(&fileLogger);
+                        consoleLogger.log("Deleted a student by ID.");
                         break;
 
                     case EXIT:
@@ -155,5 +173,10 @@ int main() {
             break;
         }
     }
+
+    string endMessage = "Program ended";
+    consoleLogger.log(endMessage);
+    fileLogger.log(endMessage);
+
     return 0;
 }

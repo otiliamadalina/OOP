@@ -1,6 +1,6 @@
 #include "universityDB.h"
 
-void Faculty::createFaculty() {
+void Faculty::createFaculty(OperationLogger* logger) {
 
     cout << "Enter faculty name: ";
     getline(cin, facultyName);
@@ -12,20 +12,23 @@ void Faculty::createFaculty() {
     getline(cin, studyField);
 
     cout << "\nFaculty created successfully!" << endl;
+
+    logger->log("Faculty created: " + facultyName);
+
 }
 
-void Faculty::displayAllFaculties() {
-    cout << endl;
+void Faculty::displayAllFaculties(OperationLogger* logger) {
+
     cout << "\nFaculty Name: " << facultyName;
     cout << "\nAbbreviation: " << facultyAbbreviation;
     cout << "\nStudy Field: " << studyField << endl;
 
 }
 
-void Faculty::displayAllFacultiesOfAField() {
+void Faculty::displayAllFacultiesOfAField(OperationLogger* logger) {
     string searchField;
 
-    cout << "Enter the study field to search for faculties: ";
+    cout << "Enter the study field: ";
     getline(cin, searchField);
 
     cout << "\nFaculties for the field " << searchField << "\":\n";
@@ -49,7 +52,7 @@ void Faculty::displayAllFacultiesOfAField() {
         getline(ss, faculty.studyField, '/');
 
         if (faculty.studyField == searchField) {
-            faculty.displayAllFaculties();
+            faculty.displayAllFaculties(logger);
             found = true;
         }
     }
@@ -58,9 +61,11 @@ void Faculty::displayAllFacultiesOfAField() {
         cout << "No faculties found.\n";
     }
     file.close();
+
+    logger->log("Searched faculties for field: " + searchField);
 }
 
-void Faculty::graduateAStudentByEmail() {
+void Faculty::graduateAStudentByEmail(OperationLogger* logger) {
     string email;
     cout << "Enter the email: ";
     getline(cin, email);
@@ -69,7 +74,7 @@ void Faculty::graduateAStudentByEmail() {
     string graduatedStudents ="D:\\UTM\\OOP\\laboratories_TEST\\graduatedStudents.txt";
     fstream file(enrolledStudents);
     if (!file) {
-        cerr << "Failed to open the file: " << enrolledStudents << "!\n";
+        cerr << "Failed to open the file enrolled st" << "\n";
         return;
     }
 
@@ -95,15 +100,22 @@ void Faculty::graduateAStudentByEmail() {
             graduatedStudent = student;
             found = true;
             cout << "Student graduated successfully!" << endl;
+
+            logger->log("Graduated student: " + graduatedStudent.getFirstName() + " " + graduatedStudent.getLastName());
+
         } else {
             students.push_back(student);
         }
     }
     file.close();
 
+    if (file.tellp() != 0) {
+        file << '\n\n';
+    }
+
     ofstream outFile(enrolledStudents);
     if (!outFile) {
-        cerr << "Failed to open the file enrolledStudents" << "\n";
+        cerr << "Failed to open the file enrolled st" << "\n";
         return;
     }
 
@@ -150,7 +162,7 @@ void Faculty::graduateAStudentByEmail() {
     }
 }
 
-void Faculty::displayEnrolledStudents() {
+void Faculty::displayEnrolledStudents(OperationLogger* logger) {
     string facultyAbb;
     cout << "Enter faculty abbreviation ";
     getline(cin, facultyAbb);
@@ -182,24 +194,14 @@ void Faculty::displayEnrolledStudents() {
         getline(ss, student.dateOfBirth, '/');
 
         if (student.facultyAbbreviation == facultyAbb) {
-            cout << "ID: " << student.ID << endl;
-            cout << "Faculty Abbreviation: " << student.facultyAbbreviation << endl;
-            cout << "First Name: " << student.firstName << endl;
-            cout << "Last Name: " << student.lastName << endl;
-            cout << "Email: " << student.email << endl;
-            cout << "Enrollment Date: " << student.enrollmentDate << endl;
-            cout << "Date of Birth: " << student.dateOfBirth << endl;
-            cout << "--------------------------\n";
+            cout << student.getFirstName() << " " << student.getLastName() << " (" << student.email << ")\n";
             found = true;
         }
     }
-    if (!found) {
-        cout << "No enrolled students found" << endl;
-    }
-    file.close();
+    logger->log("Displayed enrolled students for faculty: " + facultyAbb);
 }
 
-void Faculty::displayGraduatedStudents(){
+void Faculty::displayGraduatedStudents(OperationLogger* logger){
     cout << "\nEnter the faculty abbreviation: ";
     string facultyAbb;
     getline(cin, facultyAbb);
@@ -239,9 +241,11 @@ void Faculty::displayGraduatedStudents(){
         cout << "No graduated students found" << endl;
     }
     file.close();
+
+    logger->log("Displayed graduated students for faculty: " + facultyAbb);
 }
 
-void Faculty::searchStudentByEmail() {
+void Faculty::searchStudentByEmail(OperationLogger* logger) {
     string email;
     cout << "Enter the email: ";
     getline(cin, email);
@@ -253,7 +257,7 @@ void Faculty::searchStudentByEmail() {
         return;
     }
 
-    cout << "Enrolled students";
+    cout << "Enrolled students:";
 
     string line;
     bool found = false;
@@ -271,7 +275,7 @@ void Faculty::searchStudentByEmail() {
         getline(ss, student.dateOfBirth, '/');
 
         if (student.getEmail() == email) {
-            student.displayStudentData();
+            student.displayStudentData(logger);
             found = true;
             break;
         }
@@ -300,7 +304,7 @@ void Faculty::searchStudentByEmail() {
 
             if (student.getEmail() == email) {
                 cout << "Graduated student:";
-                student.displayStudentData();
+                student.displayStudentData(logger);
                 found = true;
                 break;
             }
@@ -308,19 +312,18 @@ void Faculty::searchStudentByEmail() {
         gradFile.close();
     }
     if (!found) {
-        cout << "No student found" << endl;
+        cout << "No student found!" << endl;
     }
+    logger->log("Searched for student by email: " + email);
 }
 
-void Faculty::checkStudentBelongsFaculty() {
+void Faculty::checkStudentBelongsFaculty(OperationLogger* logger) {
     string email, facultyAbb;
     cout << "Enter the faculty abbreviation: ";
     getline(cin, facultyAbb);
 
     cout << "Enter the email: ";
     getline(cin, email);
-
-    cout << "\nStudent with email: " << email;
 
     string enrolledStudents = "D:\\UTM\\OOP\\laboratories_TEST\\enrolledStudents.txt";
     fstream file(enrolledStudents);
@@ -345,7 +348,7 @@ void Faculty::checkStudentBelongsFaculty() {
         getline(ss, student.dateOfBirth, '/');
 
         if (student.getEmail() == email && student.facultyAbbreviation == facultyAbb) {
-            student.displayStudentData();
+            student.displayStudentData(logger);
             found = true;
             break;
         }
@@ -353,5 +356,5 @@ void Faculty::checkStudentBelongsFaculty() {
     if (!found) {
         cout << "No student found" << endl;
     }
-    file.close();
+    logger->log("Checked if student belongs to faculty: " + facultyAbb + ", email: " + email);
 }

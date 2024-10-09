@@ -1,14 +1,5 @@
 #include "universityDB.h"
 
-StudyField getStudyFieldFromString(const string &fieldStr) {
-    if (fieldStr == "0") return MECHANICAL_ENGINEERING;
-    else if (fieldStr == "1") return SOFTWARE_ENGINEERING;
-    else if (fieldStr == "2") return FOOD_TECHNOLOGY;
-    else if (fieldStr == "3") return URBANISM_ARCHITECTURE;
-    else if (fieldStr == "4") return VETERINARY_MEDICINE;
-    else return FIELD_COUNT;
-}
-
 /*
 int FileManager::get_nr_of_lines_from_file() {
 
@@ -29,10 +20,10 @@ int FileManager::get_nr_of_lines_from_file() {
 }
 */
 
-void FileManager::writeStudentsToFile() {
+void FileManager::writeStudentsToFile(OperationLogger *logger) {
     vector<Student> students;
     Student student;
-    student.addStudentData();
+    student.addStudentData(logger);
     students.push_back(student);
 
     string filePath;
@@ -52,7 +43,7 @@ void FileManager::writeStudentsToFile() {
         file << '\n';
     }
 
-    for (const auto& s : students) {
+    for (const auto &s: students) {
         file << s.ID << '/'
              << s.facultyAbbreviation << '/'
              << s.lastName << '/'
@@ -60,12 +51,16 @@ void FileManager::writeStudentsToFile() {
              << s.email << '/'
              << s.enrollmentDate << '/'
              << s.dateOfBirth << '\n';
-        cout << "Student has been added successfully to " << ((student.isGraduated()) ? "graduated" : "enrolled") << " students file.\n";
+        cout << "Student has been added successfully to " << ((student.isGraduated()) ? "graduated" : "enrolled")
+             << " students file.\n";
     }
     file.close();
+    logger->log("Student added: " + student.getFirstName() +
+                " to " + ((student.isGraduated()) ? "graduated" : "enrolled") +
+                " students file.");
 }
 
-void FileManager::readFacultiesFromFile() {
+void FileManager::readFacultiesFromFile(OperationLogger *logger) {
 
     string TUMfaculties = "D:\\UTM\\OOP\\laboratories_TEST\\TUMfaculties.txt";
     fstream file(TUMfaculties);
@@ -83,12 +78,14 @@ void FileManager::readFacultiesFromFile() {
         getline(ss, faculty.facultyName, '/');
         getline(ss, faculty.studyField, '/');
 
-        faculty.displayAllFaculties();
+        faculty.displayAllFaculties(logger);
     }
     file.close();
+
+    logger->log("Faculties were read from the file.");
 }
 
-void FileManager::write_faculties_to_file() {
+void FileManager::write_faculties_to_file(OperationLogger *logger) {
 
     string TUMfaculties = "D:\\UTM\\OOP\\laboratories_TEST\\TUMfaculties.txt";
     ofstream file(TUMfaculties, ios::app);
@@ -98,14 +95,27 @@ void FileManager::write_faculties_to_file() {
 
     vector<Faculty> faculties;
     Faculty faculty;
-    faculty.createFaculty();
+    faculty.createFaculty(logger);
     faculties.push_back(faculty);
 
-    for (const auto& s : faculties) {
+    for (const auto &s: faculties) {
         file << s.facultyAbbreviation << '/'
              << s.facultyName << '/'
              << s.studyField << '\n';
     }
     file.close();
+
+    logger->log("Faculty added: " + faculty.facultyName +
+                " with abbreviation: " + faculty.facultyAbbreviation);
 }
 
+string OperationLogger::getCurrentTime() {
+    auto now = chrono::system_clock::now();
+    time_t end_time = chrono::system_clock::to_time_t(now);
+    string timeString = ctime(&end_time);
+
+    if (!timeString.empty() && timeString.back() == '\n') {
+        timeString.pop_back();
+    }
+    return timeString;
+};

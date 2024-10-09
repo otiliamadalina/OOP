@@ -1,6 +1,6 @@
 #include "universityDB.h"
 
-void Student::addStudentData() {
+void Student::addStudentData(OperationLogger* logger) {
     cout << "Enter student ID: ";
     getline(cin, ID);
 
@@ -27,9 +27,18 @@ void Student::addStudentData() {
     getline(cin, gradResponse);
 
     isGraduate = (gradResponse == "yes");
+
+    if (logger) {
+        logger->log("Student with ID " + ID + " has been added.");
+    }
+
+    if (dynamic_cast<ConsoleLogger*>(logger)) {
+        logger->log("Student with ID " + ID + " has been added.");
+    }
+
 }
 
-void Student::displayStudentData() {
+void Student::displayStudentData(OperationLogger* logger) {
     cout << endl;
     cout << "\nID: " << ID
          << "\nFaculty: " << facultyAbbreviation
@@ -39,9 +48,17 @@ void Student::displayStudentData() {
          << "\nEnrollment date: " << enrollmentDate
          << "\nDate of birth: " << dateOfBirth
          << endl;
+
+    if (logger) {
+        logger->log("Displayed data for student with ID: " + ID);
+    }
+
+    if (dynamic_cast<ConsoleLogger*>(logger)) {
+        logger->log("Displayed data for student with ID: " + ID);
+    }
 }
 
-void Student::retrieveStudentByID() {
+void Student::retrieveStudentByID(OperationLogger* logger) {
     string uniqueID;
     cout << "Enter ID: ";
     getline(cin, uniqueID);
@@ -77,6 +94,15 @@ void Student::retrieveStudentByID() {
                  << "Enrollment Date: " << student.enrollmentDate << "\n"
                  << "Date of Birth: " << student.dateOfBirth << "\n";
             found = true;
+
+            if (logger) {
+                logger->log("Student with ID " + student.ID + " has been retrieved.");
+            }
+
+            if (dynamic_cast<ConsoleLogger*>(logger)) {
+                logger->log("Student with ID " + student.ID + " has been retrieved.");
+            }
+
             break;
         }
     }
@@ -84,10 +110,17 @@ void Student::retrieveStudentByID() {
 
     if (!found) {
         cout << "No student found" << endl;
+        if (logger) {
+            logger->log("Failed to retrieve student with ID " + uniqueID + ". Student not found.");
+        }
+
+        if (dynamic_cast<ConsoleLogger*>(logger)) {
+            logger->log("Failed to retrieve student with ID " + uniqueID + ". Student not found.");
+        }
     }
 }
 
-void Student::deleteAStudentByID() {
+void Student::deleteAStudentByID(OperationLogger* logger) {
     string enrolledFilePath = "D:\\UTM\\OOP\\laboratories_TEST\\enrolledStudents.txt";
     string graduatedFilePath = "D:\\UTM\\OOP\\laboratories_TEST\\graduatedStudents.txt";
     string deleteID;
@@ -169,11 +202,23 @@ void Student::deleteAStudentByID() {
     }
     outGraduatedFile.close();
 
-    if (foundInEnrolled) {
-        cout << "Student with ID " << deleteID << " has been deleted successfully from enrolled students!\n";
-    } else if (foundInGraduated) {
-        cout << "Student with ID " << deleteID << " has been deleted successfully from graduated students!\n";
-    } else {
-        cout << "No student found" << "\n";
+    if (logger) {
+        if (foundInEnrolled) {
+            logger->log("Student with ID " + deleteID + " has been deleted from enrolled students.");
+        } else if (foundInGraduated) {
+            logger->log("Student with ID " + deleteID + " has been deleted from graduated students.");
+        } else {
+            logger->log("Failed to delete student with ID " + deleteID + ". Student not found.");
+        }
+    }
+
+    if (dynamic_cast<ConsoleLogger*>(logger)) {
+        if (foundInEnrolled) {
+            logger->log("Student with ID " + deleteID + " has been deleted from enrolled students.");
+        } else if (foundInGraduated) {
+            logger->log("Student with ID " + deleteID + " has been deleted from graduated students.");
+        } else {
+            logger->log("Failed to delete student with ID " + deleteID + ". Student not found.");
+        }
     }
 }
