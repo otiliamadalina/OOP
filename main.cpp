@@ -1,7 +1,7 @@
 #include "universityDB.h"
 
 enum FACULTY_MENU {
-    ADD = 1,
+    CREATE_A_NEW_STUDENT = 1,
     GRADUATE_A_STUDENT,
     ENROLLED_STUDENTS,
     GRADUATE_STUDENTS,
@@ -12,23 +12,27 @@ enum FACULTY_MENU {
 enum GENERAL_MENU {
     CREATE_FACULTY = 1,
     SEARCH_STUDENT_AND_SHOW_FIELD,
-    DISPLAY_FACULTIES,
-    DISPLAY_ALL_FACULTIES_OF_A_FIELD,
-    GO_BACK
+    DISPLAY_FACULTIES_FROM_FILE,
+    DISPLAY_ALL_FACULTIES_OF_A_FIELD
+};
+
+enum STUDENT_MENU {
+    RETRIEVE_A_STUDENT = 1,
+    DELETE_A_STUDENT
 };
 
 void print_general_menu() {
     cout << "\n\tGENERAL MENU:\n";
     cout << "(" << CREATE_FACULTY << ") Create faculty\n";
     cout << "(" << SEARCH_STUDENT_AND_SHOW_FIELD << ") Search student and show field\n";
-    cout << "(" << DISPLAY_FACULTIES << ") Display faculties\n";
+    cout << "(" << DISPLAY_FACULTIES_FROM_FILE << ") Display faculties\n";
     cout << "(" << DISPLAY_ALL_FACULTIES_OF_A_FIELD << ") Display all faculties of a field\n";
-    cout << "(" << GO_BACK << ") EXIT\n";
+    cout << "(" << EXIT << ") EXIT\n";
 }
 
 void print_faculty_menu() {
     cout << "\n\tFaculty MENU:\n";
-    cout << "(" << ADD << ") Add student\n";
+    cout << "(" << CREATE_A_NEW_STUDENT << ") Add student\n";
     cout << "(" << GRADUATE_A_STUDENT << ") Graduate a student\n";
     cout << "(" << ENROLLED_STUDENTS << ") Display enrolled students\n";
     cout << "(" << GRADUATE_STUDENTS << ") Display graduated students\n";
@@ -36,20 +40,25 @@ void print_faculty_menu() {
     cout << "(" << EXIT << ") EXIT\n";
 }
 
+void print_student_menu() {
+    cout << "\n\tStudent MENU:\n";
+    cout << "(" << RETRIEVE_A_STUDENT << ") Add student\n";
+    cout << "(" << DELETE_A_STUDENT << ") Delete a student\n";
+    cout << "(" << EXIT << ") EXIT\n";
+}
+
+
 int main() {
     Faculty faculty;
+    FileManager fileManager;
+    Student student;
     int choice, exercice;
 
-    vector<Faculty> faculties;
-    SaveManager saveManager;
-    saveManager.loadData(faculties);
-
-
     while (true) {
-        cout << "\n-1- General options\n";
-        cout << "\t-2- Faculty options\n";
-        cout << "\t\t-3- Save Data\n";
-        cout << "\t\t\t-0- EXIT\n";
+        cout << "\n1. General options\n";
+        cout << "2. Faculty options\n";
+        cout << "3. Student options\n";
+        cout << "0. EXIT\n";
         cout << "Select exercise: ";
         cin >> exercice;
 
@@ -61,28 +70,28 @@ int main() {
 
                 switch (choice) {
                     case CREATE_FACULTY:
-                        faculty.createFaculty();
+                        fileManager.write_faculties_to_file();
                         break;
 
                     case SEARCH_STUDENT_AND_SHOW_FIELD:
-                        faculty.searchStudent();
+                        faculty.searchStudentByEmail();
                         break;
 
-                    case DISPLAY_FACULTIES:
-                        faculty.displayFaculties();
+                    case DISPLAY_FACULTIES_FROM_FILE:
+                        fileManager.readFacultiesFromFile();
                         break;
 
                     case DISPLAY_ALL_FACULTIES_OF_A_FIELD:
                         faculty.displayAllFacultiesOfAField();
                         break;
 
-                    case GO_BACK:
+                    case EXIT:
                         break;
 
                     default:
                         cout << "Invalid choice\n";
                 }
-            } while (choice != GO_BACK);
+            } while (choice != EXIT);
 
         } else if (exercice == 2) {
             do {
@@ -91,19 +100,16 @@ int main() {
                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
                 switch (choice) {
-                    case ADD:
-                        faculty.addStudentData();
+                    case CREATE_A_NEW_STUDENT: {
+                        fileManager.writeStudentsToFile();
                         break;
-
+                    }
                     case GRADUATE_A_STUDENT: {
-                        string email;
-                        cout << "Enter email of the student to graduate: ";
-                        getline(cin, email);
-                        faculty.graduateStudentByEmail(email);
+                        faculty.graduateAStudentByEmail();
                         break;
                     }
                     case ENROLLED_STUDENTS:
-                        faculty.displayStudents();
+                        faculty.displayEnrolledStudents();
                         break;
 
                     case GRADUATE_STUDENTS:
@@ -111,12 +117,7 @@ int main() {
                         break;
 
                     case BELONGS_TO_FACULTY: {
-                        string facultyAbbreviation, email;
-                        cout << "Enter faculty abbreviation: ";
-                        getline(cin, facultyAbbreviation);
-                        cout << "Enter student email: ";
-                        getline(cin, email);
-                        faculty.checkStudentBelongsFaculty(facultyAbbreviation, email);
+                        faculty.checkStudentBelongsFaculty();
                         break;
                     }
                     case EXIT:
@@ -128,12 +129,29 @@ int main() {
             } while (choice != EXIT);
 
         } else if (exercice == 3) {
-            saveManager.saveData(faculties);
-            cout << "Data saved successfully.\n";
+            do {
+                print_student_menu();
+                cin >> choice;
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-            break;
+                switch (choice) {
+                    case RETRIEVE_A_STUDENT:
+                        student.retrieveStudentByID();
+                        break;
 
-        }else if (exercice == 0) {
+                    case DELETE_A_STUDENT:
+                        student.deleteAStudentByID();
+                        break;
+
+                    case EXIT:
+                        break;
+
+                    default:
+                        cout << "Invalid choice\n";
+                }
+            } while (choice != EXIT);
+
+        } else if (exercice == 0) {
             break;
         }
     }
