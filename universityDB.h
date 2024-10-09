@@ -50,7 +50,7 @@ class Student {
     string firstName, lastName, email, enrollmentDate, dateOfBirth, ID;
 
 public:
-    Student() {}
+    Student() = default;
 
     string facultyAbbreviation;
 
@@ -76,7 +76,7 @@ class Faculty {
 public:
     string facultyName, facultyAbbreviation, studyField;
 
-    Faculty()  {}
+    Faculty()  = default;
 
     void createFaculty(OperationLogger* logger);
     void displayAllFaculties(OperationLogger* logger);
