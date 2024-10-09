@@ -7,41 +7,64 @@
 #include <vector>
 #include <fstream>
 #include <sstream>
+#include <ctime>
+#include <chrono>
+#include <iomanip>
 
 using namespace std;
 
-enum StudyField {
-    MECHANICAL_ENGINEERING,
-    SOFTWARE_ENGINEERING,
-    FOOD_TECHNOLOGY,
-    URBANISM_ARCHITECTURE,
-    VETERINARY_MEDICINE,
-    FIELD_COUNT
+class OperationLogger {
+public:
+    virtual void log(const string& message) = 0;
+    virtual ~OperationLogger() = default;
+
+    static string getCurrentTime();
 };
 
+
+class ConsoleLogger : public OperationLogger {
+public:
+    void log(const string& message) override {
+        cout << "[" << getCurrentTime() << "]: " << message << endl;
+    }
+};
+
+class FileLogger : public OperationLogger {
+private:
+    string LoggingSystem;
+public:
+    FileLogger(const string& file) : LoggingSystem(file) {}
+
+    void log(const string& message) override {
+        ofstream outFile(LoggingSystem, ios::app);
+        if (outFile.is_open()) {
+            outFile << "[" << getCurrentTime() << "]: " << message << endl;
+            outFile.close();
+        } else {
+            cerr << "Failed to open log file" << endl;
+        }
+    }
+};
 
 class Student {
     string firstName, lastName, email, enrollmentDate, dateOfBirth, ID;
 
 public:
+    Student() {}
+
     string facultyAbbreviation;
 
     string getEmail() const { return email; }
-
     string getFirstName() const { return firstName; }
-
     string getLastName() const { return lastName; }
 
     bool isGraduate{false};
     bool isGraduated() const { return isGraduate; }
 
-    void addStudentData();
-
-    void displayStudentData();
-
-    void retrieveStudentByID();
-
-    void deleteAStudentByID();
+    void addStudentData(OperationLogger* logger);
+    void displayStudentData(OperationLogger* logger);
+    void retrieveStudentByID(OperationLogger* logger);
+    void deleteAStudentByID(OperationLogger* logger);
 
     friend class Faculty;
     friend class FileManager;
@@ -53,21 +76,16 @@ class Faculty {
 public:
     string facultyName, facultyAbbreviation, studyField;
 
-    void createFaculty();
+    Faculty()  {}
 
-    void displayAllFaculties();
-
-    void searchStudentByEmail();
-
-    void displayAllFacultiesOfAField();
-
-    void displayEnrolledStudents();
-
-    void displayGraduatedStudents();
-
-    void graduateAStudentByEmail();
-
-    void checkStudentBelongsFaculty();
+    void createFaculty(OperationLogger* logger);
+    void displayAllFaculties(OperationLogger* logger);
+    void searchStudentByEmail(OperationLogger* logger);
+    void displayAllFacultiesOfAField(OperationLogger* logger);
+    void displayEnrolledStudents(OperationLogger* logger);
+    void displayGraduatedStudents(OperationLogger* logger);
+    void graduateAStudentByEmail(OperationLogger* logger);
+    void checkStudentBelongsFaculty(OperationLogger* logger);
 
 };
 
@@ -76,18 +94,12 @@ class FileManager {
 public:
     //int get_nr_of_lines_from_file();
 
-    void writeStudentsToFile();
-
-    void readFacultiesFromFile();
-
-    void write_faculties_to_file();
+    void writeStudentsToFile(OperationLogger* logger);
+    void readFacultiesFromFile(OperationLogger* logger);
+    void write_faculties_to_file(OperationLogger* logger);
 
     friend class Faculty;
     friend class Student;
 };
-
-
-
-
 
 #endif //LABORATORIES_TEST_UNIVERSITYDB_H
