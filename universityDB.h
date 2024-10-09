@@ -1,3 +1,6 @@
+#ifndef LABORATORIES_TEST_UNIVERSITYDB_H
+#define LABORATORIES_TEST_UNIVERSITYDB_H
+
 #include <iostream>
 #include <string>
 #include <limits>
@@ -16,25 +19,12 @@ enum StudyField {
     FIELD_COUNT
 };
 
-const string fieldNames[FIELD_COUNT] = {
-        "Mechanical Engineering",
-        "Software Engineering",
-        "Food Technology",
-        "Urbanism Architecture",
-        "Veterinary Medicine"
-};
 
 class Student {
-    string firstName, lastName, email, enrollmentDate, dateOfBirth;
+    string firstName, lastName, email, enrollmentDate, dateOfBirth, ID;
 
 public:
-    string facultyAbbreviationStudentBelongs;
-
-    bool isGraduate{false};
-
-    void inputData();
-
-    void printData() const;
+    string facultyAbbreviation;
 
     string getEmail() const { return email; }
 
@@ -42,65 +32,62 @@ public:
 
     string getLastName() const { return lastName; }
 
+    bool isGraduate{false};
     bool isGraduated() const { return isGraduate; }
 
-    void setGraduationStatus(bool status) { isGraduate = status; }
+    void addStudentData();
 
-    void saveToFile(ofstream &ofs) const;
+    void displayStudentData();
 
-    void loadFromFile(const string &line);
+    void retrieveStudentByID();
+
+    void deleteAStudentByID();
+
+    friend class Faculty;
+    friend class FileManager;
 
 };
 
 class Faculty {
 
-    struct FacultyInfo {
-        string facultyName;
-        string facultyAbbreviation;
-        StudyField studyField;
-    };
-
 public:
-    vector<FacultyInfo> faculties;
-
-    string facultyName, facultyAbbreviation;;
-
-    Faculty() : nr_of_students(0) {}
+    string facultyName, facultyAbbreviation, studyField;
 
     void createFaculty();
 
-    void displayFaculties();
+    void displayAllFaculties();
 
-    void searchStudent() const;
+    void searchStudentByEmail();
 
     void displayAllFacultiesOfAField();
 
-    void addStudentData();
+    void displayEnrolledStudents();
 
-    void displayStudents() const;
+    void displayGraduatedStudents();
 
-    void displayGraduatedStudents() const;
+    void graduateAStudentByEmail();
 
-    void graduateStudentByEmail(const string &email);
+    void checkStudentBelongsFaculty();
 
-    void checkStudentBelongsFaculty(const string &facultyAbbreviation, const string &email);
-
-    void addStudent(const Student &student);
-
-    void saveToFile(ofstream &ofs) const;
-
-    void loadFromFile(const string &line);
-
-
-    int nr_of_students;
-    Student list_of_students[500];
 };
 
-class SaveManager {
+class FileManager {
+
 public:
-    static void saveData(const vector<Faculty> &faculties);
+    //int get_nr_of_lines_from_file();
 
-    static void loadData(vector<Faculty> &faculties);
+    void writeStudentsToFile();
+
+    void readFacultiesFromFile();
+
+    void write_faculties_to_file();
+
+    friend class Faculty;
+    friend class Student;
 };
 
 
+
+
+
+#endif //LABORATORIES_TEST_UNIVERSITYDB_H

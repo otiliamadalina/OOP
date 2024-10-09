@@ -1,6 +1,7 @@
 #include "universityDB.h"
 
 void Student::inputData() {
+
     cout << "Enter faculty abbreviation: ";
     getline(cin, facultyAbbreviationStudentBelongs);
 
