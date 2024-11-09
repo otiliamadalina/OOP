@@ -31,11 +31,6 @@ void Student::addStudentData(OperationLogger* logger) {
     if (logger) {
         logger->log("Student with ID " + ID + " has been added.");
     }
-
-    if (dynamic_cast<ConsoleLogger*>(logger)) {
-        logger->log("Student with ID " + ID + " has been added.");
-    }
-
 }
 
 void Student::displayStudentData(OperationLogger* logger) {
@@ -52,10 +47,6 @@ void Student::displayStudentData(OperationLogger* logger) {
     if (logger) {
         logger->log("Displayed data for student with ID: " + ID);
     }
-
-    if (dynamic_cast<ConsoleLogger*>(logger)) {
-        logger->log("Displayed data for student with ID: " + ID);
-    }
 }
 
 void Student::retrieveStudentByID(OperationLogger* logger) {
@@ -63,7 +54,7 @@ void Student::retrieveStudentByID(OperationLogger* logger) {
     cout << "Enter ID: ";
     getline(cin, uniqueID);
 
-    string enrolledStudents = "D:\\UTM\\OOP\\laboratories_TEST\\enrolledStudents.txt";
+    string enrolledStudents =" D:\\UTM\\OOP\\OOP work\\OOP\\enrolledStudents.txt"; //"D:\\UTM\\OOP\\laboratories_TEST\\enrolledStudents.txt";
     fstream file(enrolledStudents);
     if (!file) {
         cerr << "Failed to open the students file\n";

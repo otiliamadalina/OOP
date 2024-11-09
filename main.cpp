@@ -24,7 +24,7 @@ enum STUDENT_MENU {
 void print_general_menu() {
     cout << "\n\tGENERAL MENU:\n";
     cout << "(" << CREATE_FACULTY << ") Create faculty\n";
-    cout << "(" << SEARCH_STUDENT_AND_SHOW_FIELD << ") Search student and show field\n";
+    cout << "(" << SEARCH_STUDENT_AND_SHOW_FIELD << ") Search student\n";
     cout << "(" << DISPLAY_FACULTIES_FROM_FILE << ") Display faculties\n";
     cout << "(" << DISPLAY_ALL_FACULTIES_OF_A_FIELD << ") Display all faculties of a field\n";
     cout << "(" << EXIT << ") EXIT\n";
@@ -42,7 +42,7 @@ void print_faculty_menu() {
 
 void print_student_menu() {
     cout << "\n\tStudent MENU:\n";
-    cout << "(" << RETRIEVE_A_STUDENT << ") Add student\n";
+    cout << "(" << RETRIEVE_A_STUDENT << ") Retrieve a student by ID\n";
     cout << "(" << DELETE_A_STUDENT << ") Delete a student\n";
     cout << "(" << EXIT << ") EXIT\n";
 }
