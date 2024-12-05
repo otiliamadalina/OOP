@@ -1,0 +1,28 @@
+2015-08-29,2022624,serious,second,tree,459.48,57,Palestinian Territory,Ramirezshire
+1975-06-17,7711061,notice,occur,simply,667.95,61,Botswana,South Matthewstad
+2015-08-29,9133807,guess,natural,friend,698.41,57,Monaco,West Tylerfurt
+1974-09-22,7951186,rock,charge,serious,35.34,100,United States Virgin Islands,South Evelynville
+1995-11-24,8157273,my,talk,meeting,925.01,2,Ukraine,Olsonton
+1995-09-15,1158622,sea,keep,meeting,822.93,25,San Marino,Lake Angelaport
+1990-12-15,4377251,car,recently,central,81.24,25,Tajikistan,South Travis
+2014-07-17,3505800,amount,box,reason,233.7,14,South Georgia and the South Sandwich Islands,Lake John
+2016-11-10,1860458,inside,role,some,499.52,79,Brazil,New Jasonfurt
+1997-02-23,4259563,middle,rule,across,785.32,70,Heard Island and McDonald Islands,South Crystal
+2003-02-15,1579615,situation,again,reduce,442.33,30,Canada,Perrybury
+1982-10-25,7178364,cell,fill,subject,42.73,7,Vietnam,Kristenberg
+1990-08-14,5847100,describe,common,system,52.93,5,Portugal,Lake Jamiemouth
+1999-10-12,2106486,different,become,Congress,364.1,40,Saint Martin,Fletchertown
+2021-10-24,3552818,indicate,member,management,72.52,71,Tonga,Salazarhaven
+1999-07-04,4706477,minute,next,eight,301.32,38,Niger,South Lindaview
+1998-10-07,6618969,care,American,song,357.66,97,Italy,Lutztown
+2012-03-24,8840633,way,nice,ago,306.16,36,Zimbabwe,North Johnberg
+2006-09-01,2462441,radio,develop,situation,512.49,5,Mexico,Brooksville
+1973-08-22,3243233,manager,all,environmental,242.14,84,Lesotho,Martinshire
+1994-11-21,6233579,recent,help,federal,186.48,8,Afghanistan,Dunnside
+1979-06-13,9797969,believe,agreement,concern,513.25,100,Hungary,New Javierland
+2010-05-25,8659839,start,standard,difficult,563.25,27,Korea,Thomaston
+1984-07-22,1976239,statement,area,wonder,221.32,31,Monaco,Cassidyside
+1984-09-07,605246,have,much,what,786.8,15,Greenland,Taylorburgh
+2021-11-01,7699357,else,sure,mother,519.68,52,Norfolk Island,Wallaceview
+abc - c1
+zzz - c2
